@@ -5,7 +5,7 @@ def show_main(request):
     context = {
         'name': 'Muhammad Farrel Altaf',
         'app_name': 'CarRel',
-        'class': "PBP C"
+        'class': "PBP B"
     }
 
     return render(request, "main.html", context)
