@@ -79,7 +79,7 @@
 
 ## **No 2**
 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-<img width="2438" alt="Flow Django Final" src="https://github.com/LokSki22/CarRel/assets/119926379/0cb33eb9-6a49-4e80-a5f3-1e9056e09f67">
+<img width="2022" alt="Flow Django" src="https://github.com/LokSki22/CarRel/assets/119926379/68d2c5be-2f5f-48ea-b7d1-30802aaf66d5">
 
 ## **No 3**
 3. Jelaskan mengapa kita menggunakan _virtual environment_? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?
