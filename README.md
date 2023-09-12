@@ -8,7 +8,7 @@
 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 * A. Membuat sebuah proyek Django baru:
     - Saya membuat direktori lokal dengan bernama CarRel untuk menampung segala kebutuhan proyek saya.
-    - Berikutnya, saya membuka command prompt, lalu membuat _virtual environment_ yang fungsinya untuk mengisolasi _package_ serta _dependencies_ dari aplikasi saya agar tidak bertabrakan dengan versi satu sama lain yang ada di device yang saya pakai. Caranya adalah memasukan perintah di command prompt sebagai berikut.
+    - Berikutnya, saya membuka command prompt, lalu membuat _virtual environment_ yang fungsinya untuk mengisolasi _package_ serta _dependencies_ dari aplikasi saya agar tidak bertabrakan dengan versi satu sama lain yang ada di _device_ yang saya pakai. Caranya adalah memasukan perintah di _command prompt_ sebagai berikut.
       ```
       python -m venv env
       ```
@@ -16,23 +16,23 @@
       ```
       env\Scripts\activate.bat
       ```
-    - Setelah mengaktifkan _virtual environment_ kita dapat menginstall semua dependencies yang diperlukan. Sebelumnya, saya membuat file bernama requirements.txt yang berisi dependencies yang diperlukan seperti django, gunicorn, dan lain-lain.
-    - Untuk menginstall dependencies yang diperlukan, saya memasukan perintah berikut di command prompt:
+    - Setelah mengaktifkan _virtual environment_ kita dapat menginstall semua dependencies yang diperlukan. Sebelumnya, saya membuat file bernama requirements.txt yang berisi _dependencies_ yang diperlukan seperti django, gunicorn, dan lain-lain.
+    - Untuk menginstall _dependencies_ yang diperlukan, saya memasukan perintah berikut di _command prompt_:
     - ```
       pip install -r requirements.txt
       ```
-    - Setelah menginstall dependencies, saya membuat proyek Django yang baru dengan memasukan perintah berikut:
+    - Setelah menginstall _dependencies_, saya membuat proyek Django yang baru dengan memasukan perintah berikut:
     - ```
       django-admin startproject libshop .
       ```
-    - Karena proyek yang dibuat masih tahap uji coba, `ALLOWED HOST` pada `settings.py` saya tambahkan "*" agar setiap hosts bisa mengakses aplikasi web
+    - Karena proyek yang dibuat masih tahap uji coba, `ALLOWED HOST` pada `settings.py` saya tambahkan "*" agar setiap _hosts_ bisa mengakses aplikasi web
      ```
      ALLOWED_HOSTS = ["*"]
      ```
     - Setelah itu saya menambahkan file `.gitignore` karena ada _file-file_ yang tidak perlu git lacak.
 
 * B. Membuat aplikasi dengan nama `main` pada proyek tersebut:
-    - Kembali ke command prompt, saya menulis perintah berikut untuk membuat aplikasi 'main' pada proyek saya:
+    - Kembali ke _command prompt_, saya menulis perintah berikut untuk membuat aplikasi 'main' pada proyek saya:
       ```
        python manage.py startapp main
       ```
@@ -40,7 +40,7 @@
     - Setelah itu, saya membuka file `settings.py` di dalam direktori CarRel.
     - Setelah itu, saya menambahkan direktori baru `templates`pada direktori main dan menambahkan file `main.html` yang berfungsi mengatur tampilan aplikasi main pada web.
 
-* C. Melakukan routing pada proyek agar dapat menjalankan aplikasi `main`.
+* C. Melakukan _routing_ pada proyek agar dapat menjalankan aplikasi `main`.
     - Untuk mengonfigurasi routing aplikasi dalam proyek saya, saya membuka file `urls.py` pada direktori proyek `libshop`. kemudian saya mengimpor fungsi `include` dari `django.urls` dan menambahkan  `path('main/',include('main.urls'))`yang berfungsi path untuk menuju tampilan main pada variabel `urlpattern`
 
 * D. Membuat model pada aplikasi `main` dengan nama `Item` dan memiliki atribut wajib sebagai berikut. name sebagai nama item dengan tipe CharField. amount sebagai jumlah item dengan tipe IntegerField. description sebagai deskripsi item dengan tipe TextField.
@@ -52,7 +52,7 @@
       - date_added 
       - categories
         
-* E. Membuat sebuah fungsi pada `views.py` untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.
+* E. Membuat sebuah fungsi pada `views.py` untuk dikembalikan ke dalam sebuah _template_ HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.
     - Saya menambahkan fungsi `show_main` dan berisi _context_ yang didalamnya berisi _name_ , _app_name_ , dan _class_
     - Isinya seperti bberikut:
     - ```
@@ -65,7 +65,7 @@
       ```
     - Pada file '`main.html`, saya dapat mengakses isi dari _context_ dengan contohnya menulis `{{name}}`. `{{name}}` akan mengambil isi `name` dari _context_ yaitu 'Muhammad Farrel Altaf'
 
-* F. Membuat sebuah routing pada `urls.py` aplikasi main untuk memetakan fungsi yang telah dibuat pada `views.py`.
+* F. Membuat sebuah _routing_ pada `urls.py` aplikasi main untuk memetakan fungsi yang telah dibuat pada `views.py`.
     - Saya mengimpor `path` dari `django.urls` dan impor `show_main` dari `main.views`
     - Setelah itu, saya membuat variable app_name yang berisi main seperti potongan kode berikut
     - ```app_name = 'main'```
@@ -73,7 +73,7 @@
     -  ```
        urlpatterns = path('', show_main, name='show_main')
 
-* G. Melakukan deployment ke Adaptable terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.
+* G. Melakukan _deployment_ ke Adaptable terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.
     - Saya membuat repositori baru bernama CarRel di github, lalu saya hubungkan direktori CarRel di lokal ke repositori CarRel di Github. Setelah itu, saya lakukan _add, commit, push_. Kemudian saya lakukan deploy di adaptable (Tidak lupa untuk memilih _template_ deployment, tipe basis data, versi _python_, masukan command yang sesuai, nama aplikasi yang sesuai dan centang bagian HTTP Listener on PORT).
 
 
@@ -91,20 +91,20 @@
 4. Jelaskan apakah itu MVC, MVT, MVVM dan perbedaan dari ketiganya.
 * MVC, MVT, dan MVVM ketiganya merupakan pola desain dan arstiektur perangkat lunak untuk mengembangkan aplikasi atau web.
 * MVC
-    - MVC merupakan singkatan dari Model-View-Controller.
-    - Model berperan dalam mengatur logika dan data dari aplikasi atau web serta mengubungkan aplikasi atau web dengan database (_Backend_).
-    - View berperan menampilkan data dari model yang akan dilihat pengguna (_Front-End_).
-    - Controller berperan mengatur hubungan antara model dan view, dimana controller memproses aktivitas dari pengguna lalu berinteraksi dengan model dan mengubah view (_Middle_). 
+    - MVC merupakan singkatan dari _Model-View-Controller_.
+    - _Model_ berperan dalam mengatur logika dan data dari aplikasi atau web serta mengubungkan aplikasi atau web dengan _database_ (_Backend_).
+    - _View_ berperan menampilkan data dari _Model_ yang akan dilihat pengguna (_Front-End_).
+    - _Controller_ berperan mengatur hubungan antara model dan view, dimana controller memproses aktivitas dari pengguna lalu berinteraksi dengan _Model_ dan mengubah _View_ (_Middle_). 
 * MVT
-    - MVT merupakan singkatan dari Model-View-Template.
-    - Model berperan dalam mengatur logika dan data dari aplikasi atau web serta mengubungkan aplikasi atau web dengan database (_Backend_).
-    - View disini berperan seperti Controller pada MVC untuk mengambil data dari model dan menghubungkannya dengan template (_Middle_).
-    - Template berperan untuk sisi menampilkan _user interface_ bagi pengguna (_Front-End_).
+    - MVT merupakan singkatan dari _Model-View-Template_.
+    - _Model_ berperan dalam mengatur logika dan data dari aplikasi atau web serta mengubungkan aplikasi atau web dengan _database_ (_Backend_).
+    - _View_ disini berperan seperti _Controller_ pada MVC untuk mengambil data dari _Model_ dan menghubungkannya dengan _Template_ (_Middle_).
+    - _Template_ berperan untuk sisi menampilkan _user interface_ bagi pengguna (_Front-End_).
 * MVVM
-    - MVVM merupakan singkatan dari Model-View-ViewModel.
-    - Model berperan dalam mengatur logika dan data dari aplikasi atau web serta mengubungkan aplikasi atau web dengan database (_Backend_).
-    - View berperan untuk menampilkan data dari model (_Front-End_).
-    - ViewModel berperan untuk mengubah data dari model ke dalam format yang lebih mudah untuk dibaca oleh View, selain itu ViewModel juga berguna untuk _data binding_ yaitu menyinkornkan penyajian data dan fungsi ke View serta pembaruan Model (_Middle_).
+    - MVVM merupakan singkatan dari _Model-View-ViewModel_.
+    - _Model_ berperan dalam mengatur logika dan data dari aplikasi atau web serta mengubungkan aplikasi atau web dengan _database_ (_Backend_).
+    - _View_ berperan untuk menampilkan data dari _Model_ (_Front-End_).
+    - _ViewModel_ berperan untuk mengubah data dari model ke dalam format yang lebih mudah untuk dibaca oleh _View_, selain itu ViewModel juga berguna untuk _data binding_ yaitu menyinkornkan penyajian data dan fungsi ke View serta pembaruan _Model_ (_Middle_).
 * MVC dan MVT merupakan memiliki kemiripan dalam, perbedaanya hanya pada istilah komponen yang digunakan dan implementasi khusus pada _framework_nya masing-masing. Sedangkan MVVM memiliki perbedaan dari MVC dan MVT, dengan menekankan konsep _data binding_ yang tidak dipakai MVC dan MVT.
 
 
