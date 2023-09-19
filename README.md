@@ -1,7 +1,97 @@
-# Tugas 2 PBP 
+# Tugas 2 & 3 PBP 
+
 # CarRel App
 # [Link App](https://carrel.adaptable.app/main/)
 # **Muhammad Farrel Altaf (2206829332) - PBP B**
+
+
+# Tugas 3
+
+
+## **No 1**
+1. Apa Perbedaan antara form `POST` dan `GET` dalam Django?
+* `POST`
+  - Fungsi utama dari form `POST` adalah untuk mengirimkan data ke server. `POST` biasanya digunakan untuk membuat,            meng-_update_ data, atau penghapusan data. Contohya seperti membuat file dan mengirimkan formulir.
+* `GET`
+  - Fungsi utama dari `GET` adalah untuk melakukan _request_ terhadap server untuk meminta data tanpa mengubah isi data.       `GET` biasanya digunakan untuk pencarian atau menampilkan data. Contohnya seperti mengambil data untuk ditampilkan di      halaman web seperti menampilkan artikel.
+* Lainnya
+  - Berikut merupakan perbedaan lainnya:
+    | Perbedaan               | POST                             | GET                             |
+    |-------------------------|------------------------------------------|---------------------------------| 
+    | Batas _Character_          | Tidak ada batasan  | Panjang URL 2047 _character_ |
+    | Keamanan                | Lebih aman (Karena data tidak terlihat dalam URL) | Kurang aman (Karena data terlihat dalam URL serta dapat dilihat oleh pihak ketiga) |
+    | HTTP Status Code        | Jika POST _request_ berhasil, maka kodenya adalah status HTTP 201 | Jika GET _request_ berhasil, maka kodenya adalah kode status HTTP 200 (OK) |
+    | _Input_ Data            |  Dilakukan melalui form |  dilakukan melalui link |
+    | Pemanggilan Method      | POST menggunakan $_POST | GET menggunakan $_GET |
+
+
+## **No 2**
+2. Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?
+   - Extensible Markup Language (XML) biasanya digunakan untuk pertukaran data dengan server. XML memiliki jenis     
+     struktur data berbasis _tag_ `<>`. Berikut adalah contoh dari kode XML:
+     ```
+        <?xml version="1.0" encoding="utf-8"?>
+        <django-objects version="1.0">
+            <object model="main.item" pk="2">
+                <field name="name" type="CharField">Toyota Raize GR Sport</field>
+                <field name="amount" type="IntegerField">1</field>
+                <field name="price" type="IntegerField">50000</field>
+                <field name="category" type="CharField">Compact</field>
+                <field name="description" type="TextField">Raize Keluaran terbaru</field>
+                <field name="date_added" type="DateField">2023-09-17</field>
+            </object>
+        </django-objects>
+     ```
+
+   - JavaScript Object Notation (JSON) biasanya juga digunakan untuk pertukaran data dengan server. JSON memiliki struktur      data yang berbasis pasangan `key:value`. JSON cenderung memiliki _syntax _kode yang lebih ringkas dan mudah dibaca,        sehingga biasa digunakan untuk pertukaran data terstruktur antara server dengna _client web_. Berikut adalah               contoh dari kode JSON:
+     ```
+        [
+            {
+                "model": "main.item",
+                "pk": 2,
+                "fields": {
+                    "name": "Toyota Raize GR Sport",
+                    "amount": 1,
+                    "price": 50000,
+                    "category": "Compact",
+                    "description": "Raize Keluaran terbaru",
+                    "date_added": "2023-09-17"
+                }
+            }
+        ]
+     ```
+
+   - Hypertext Markup Language (HTML) tidak digunakan untuk pertukaran data, melainkan biasanya digunakan untuk mengatur        bagaimana data seperti _text, dan _image_, ditampilkan dalam suatu web. Berikut contoh kode HTML:
+     ```
+        <h1>CarRel's Shop</h1>
+        <h5>Name: </h5>
+        <p>{{ name }}<p>
+        <h5>App Name: </h5>
+        <p>{{ app_name }}<p>
+        <h5>Class: </h5>
+        <p>{{ class }}<p>
+     ```
+     
+
+
+## **No 3**
+3. Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
+   - JSON sering digunakan dalam pertukaran data antara aplikasi web modern karena memiliki format dan syntax yang         
+    cenderung lebih singkat dan mudah dibaca.Hal tersebut dapat mempermudah _developer_ memahami struktur data teresbut.
+   - JSON kompatibel dengan javascript sehingga lebih terintegerasi pada banyak web.
+   - JSON lebih efisien dalam ukuran penyimpanan data.
+  
+
+## **No 4**
+4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+
+## **No 5**
+Mengakses kelima URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman.
+
+
+
+# Tugas 2 
 
 
 ## **No 1**
@@ -110,3 +200,5 @@
 
 ## **Bonus**
 * Saya telah menambahkan tes baru yaitu merupakan tes model. Tes model berfungsi untuk mengecek apakah model yang dibuat sudah berkerja dengan baik atau tidak.
+
+
