@@ -27,8 +27,8 @@
 
 ## **No 2**
 2. Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?
-   - Extensible Markup Language (XML) biasanya digunakan untuk pertukaran data dengan server. XML memiliki jenis     
-     struktur data berbasis _tag_ `<>`. Berikut adalah contoh dari kode XML:
+* Extensible Markup Language (XML) biasanya digunakan untuk pertukaran data dengan server. XML memiliki jenis     
+  struktur data berbasis _tag_ `<>`. Berikut adalah contoh dari kode XML:
      ```
         <?xml version="1.0" encoding="utf-8"?>
         <django-objects version="1.0">
@@ -43,7 +43,7 @@
         </django-objects>
      ```
 
-   - JavaScript Object Notation (JSON) biasanya juga digunakan untuk pertukaran data dengan server. JSON memiliki struktur      data yang berbasis pasangan `key:value`. JSON cenderung memiliki _syntax _kode yang lebih ringkas dan mudah dibaca,        sehingga biasa digunakan untuk pertukaran data terstruktur antara server dengna _client web_. Berikut adalah               contoh dari kode JSON:
+* JavaScript Object Notation (JSON) biasanya juga digunakan untuk pertukaran data dengan server. JSON memiliki struktur      data yang berbasis pasangan `key:value`. JSON cenderung memiliki _syntax _kode yang lebih ringkas dan mudah dibaca,        sehingga biasa digunakan untuk pertukaran data terstruktur antara server dengna _client web_. Berikut adalah               contoh dari kode JSON:
      ```
         [
             {
@@ -61,7 +61,7 @@
         ]
      ```
 
-   - Hypertext Markup Language (HTML) tidak digunakan untuk pertukaran data, melainkan biasanya digunakan untuk mengatur        bagaimana data seperti _text, dan _image_, ditampilkan dalam suatu web. Berikut contoh kode HTML:
+* Hypertext Markup Language (HTML) tidak digunakan untuk pertukaran data, melainkan biasanya digunakan untuk mengatur        bagaimana data seperti _text, dan _image_, ditampilkan dalam suatu web. Berikut contoh kode HTML:
      ```
         <h1>CarRel's Shop</h1>
         <h5>Name: </h5>
@@ -76,18 +76,263 @@
 
 ## **No 3**
 3. Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
-   - JSON sering digunakan dalam pertukaran data antara aplikasi web modern karena memiliki format dan syntax yang         
-    cenderung lebih singkat dan mudah dibaca.Hal tersebut dapat mempermudah _developer_ memahami struktur data teresbut.
-   - JSON kompatibel dengan javascript sehingga lebih terintegerasi pada banyak web.
-   - JSON lebih efisien dalam ukuran penyimpanan data.
+* JSON sering digunakan dalam pertukaran data antara aplikasi web modern karena memiliki format dan syntax yang         
+  cenderung lebih singkat dan mudah dibaca.Hal tersebut dapat mempermudah _developer_ memahami struktur data teresbut.
+* JSON kompatibel dengan javascript sehingga lebih terintegerasi pada banyak web.
+* JSON lebih efisien dalam ukuran penyimpanan data.
   
 
 ## **No 4**
 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+* A. Membuat input form untuk menambahkan objek model pada app sebelumnya
+    - Saya membuat input form yang bernama`forms.py` pada direktori aplikasi main. dengan isi sebagai berikut:
+      ```
+      from django.forms import ModelForm
+      from main.models import Item
+      
+      class ItemForm(ModelForm):
+          class Meta:
+              model = Item
+              fields = ["name","categories","description", "price", "amount"]
+      ```
+      Disini saya membuat class bernama ItemForm. Dalamnya berisi class Meta yang berisi model yang kita gunakan. Selain         itu berisi fields yang bisa diisi user, yaitu "name","categories","description", "price", "amount".
+
+    - Setelah itu, saya membuat fungsi `create_item` pada `views.py` dengan isi sebagai berikut:
+      ```
+      def create_item(request):
+      form = ItemForm(request.POST or None)
+  
+      if form.is_valid() and request.method == "POST":
+          form.save()
+          return HttpResponseRedirect(reverse('main:show_main'))
+  
+      context = {'form': form}
+      return render(request, "create_item.html", context)
+      ```
+      Disini fungsi menerima sebuah parameter request. Dalam fungsi `create_item` saya membuat sebuah `ItemForm` dengan   
+      argumen `request.POST` yang berbentuk QueryDict. Setelah itu divalidasi menggunakan `form.is_valid()` dan disimpan         dengan `form.save()`. Ketika berhasil disimpan, akan me-_return_ `HttpResponseRedirect(reverse('main:show_main'))`         untuk melakukan redirect setelah data form berhasil disimpan.
+
+    - Setelah itu, saya mengubah dan menambahkan fungsi `show_main` pada `views.py` dengan kode sebagai berikut:
+      ```
+      def show_main(request):
+        items = Item.objects.all()
+        total_items = items.count()
+        context = {
+            'name': 'Muhammad Farrel Altaf',
+            'class': "PBP B",
+            'items': items,
+            'item_count': total_items
+        }
+    
+        return render(request, "main.html", context)
+      ```
+      disini saya menambahkan `item = Item.objects.all()` untuk menampilkan data item yang ditambahkan dan menambahkan     
+      kode `total_items = item.count()` (SOAL BONUS) untuk mendapatkan jumlah item yang sudah ditambahkan dan dimasukan ke       context.
+
+    - Setelah itu, saya meng-_import_ fungsi `create_item` di `urls.py` yang berada pada direkori aplikasi main
+    
+    - Setelah itu saya melakukan routing di `urls.py` pada direktori aplikasi main dengan menambahkan `path('create-item',       create_item, name='create_item')` di urlpatterns
+    
+    - Setelah itu saya membuat file `create_item.html` pada `templates` direktori aplikasi `main` dengan isi sebagai       
+      berikut
+      ```
+      {% extends 'base.html' %} 
+
+      {% block content %}
+      <h1>Add New Item</h1>
+      
+      <form method="POST">
+          {% csrf_token %}
+          <table>
+              {{ form.as_table }}
+              <tr>
+                  <td></td>
+                  <td>
+                      <input type="submit" value="Add Item"/>
+                  </td>
+              </tr>
+          </table>
+      </form>
+      
+      {% endblock %}
+      ```
+      Saya menggunakan `<form method="POST">` untuk mendefinisikan tipe form POST dan {% csrf_token %} untuk security.
+
+    - Setelah itu saya mengubah dan menambahkan isi file `main.html` pada direktori `templates` seperti kode berikut
+      ```
+      {% extends 'base.html' %}
+
+      {% block content %}
+          <h1>CarRel's Shop</h1>
+          <h5>Name: </h5>
+          <p>{{ name }}</p>
+          <h5>Class: </h5>
+          <p>{{ class }}</p>
+      
+          <h5>Total Item: </h5>
+          <p>Anda menyimpan {{ item_count }} jenis mobil pada aplikasi CarRel</p>
+      
+          <h5>Detail Item: </h5>
+          <table border="1">
+              <tr>
+                  <th>Name</th>
+                  <th>Categories</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Amount</th>
+                  <th>Date Added</th>
+              </tr>
+      
+              {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+      
+              {% for item in items %}
+                  <tr>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.categories }}</td>
+                      <td>{{ item.description }}</td>
+                      <td>{{ item.price }}</td>
+                      <td>{{ item.amount }}</td>
+                      <td>{{ item.date_added }}</td>
+                  </tr>
+              {% endfor %}
+          </table>
+      
+          <br />
+      
+          <a href="{% url 'main:create_item' %}">
+              <button>
+                  Add New Item
+              </button>
+          </a>
+      {% endblock content %}
+
+      ```
+      Selain kode dari tutorial, saya menambahkan jumlah total item yang disimpan (BONUS) dan juga border untuk table.
+
+      
+* B. Tambahkan 5 fungsi views untuk melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON      by ID.
+    - HTML
+      - Menampilkan main.html pada fungsi `show_main` di `views.py`
+      ```
+      def show_main(request):
+        items = Item.objects.all()
+        total_items = items.count()
+        context = {
+            'name': 'Muhammad Farrel Altaf',
+            'class': "PBP B",
+            'items': items,
+            'item_count': total_items
+        }
+  
+      return render(request, "main.html", context)
+      ```
+
+    - XML dan JSON
+      - Meng-_import_
+      ```
+      from django.http import HttpResponse
+      from django.core import serializers
+      ```
+      
+      - Membuat fungsi show_xml di `views.py` dengan kode berikut:
+      ```
+      def show_xml(request):
+      data = Item.objects.all()
+      return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+      ```
+      Serializerz disini digunakan untuk mentranslasikan objek model ke XML. Fungsi me-_return_ tampilan data dengan     
+      format XML.
+      
+      - Membuat fungsi show_json di `views.py` dengan kode berikut:
+      ```
+      def show_json(request):
+      data = Item.objects.all()
+      return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+      ```
+      Serializerz disini digunakan untuk mentranslasikan objek model ke JSON. Fungsi me-_return_ tampilan data dengan     
+      format JSON.
+
+    - XML by ID dan JSON by ID
+      - Meng-_import_ (sama saja seperti diatas)
+      ```
+      from django.http import HttpResponse
+      from django.core import serializers
+      ```
+      
+      - Membuat fungsi show_xml_by_id di `views.py` dengan kode berikut:
+      ```
+      def show_xml_by_id(request, id):
+      data = Item.objects.filter(pk=id)
+      return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+      ```
+      Serializerz disini digunakan untuk mentranslasikan objek model ke XML. Fungsi me-_return_ tampilan data dengan     
+      format XML. Bedanya disini objek diambil berdasarkan ID.
+      
+      - Membuat fungsi show_xml_by_id di `views.py` dengan kode berikut:
+      ```
+      def show_json_by_id(request, id):
+      data = Item.objects.filter(pk=id)
+      return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+      ```
+      Serializerz disini digunakan untuk mentranslasikan objek model ke JSON. Fungsi me-_return_ tampilan data dengan     
+      format JSON. Bedanya disini objek diambil berdasarkan ID.
+      
+      
+      
+      
+      
+
+
+
+
+* C. Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2.
+   - Pertama-tama saya melakukan _import_ pada `urls.py` dalam direktori `main`
+   ```
+   from django.urls import path
+   from main.views import show_main, create_item, show_xml, show_json, show_xml_by_id, show_json_by_id
+   ```
+   - Lalu saya melakukan routing dengan kode:
+    ```
+    app_name = 'main'
+
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+        path('create-item', create_item, name='create_item'),
+        path('xml/', show_xml, name='show_xml'),
+        path('json/', show_json, name='show_json'),
+        path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+        path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+    ]
+    
+    ```
+   - HTML sudah dilakukan sebelumnya dengan kode bagian:
+     ```
+     path('', show_main, name='show_main'),
+     path('create-item', create_item, name='create_item'),
+     ```
+     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000`
+     
+   - XML dan JSON dengan kode bagian:
+     ```
+     path('xml/', show_xml, name='show_xml'),
+     path('json/', show_json, name='show_json'),
+     ```
+     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/xml` untuk XML.
+     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/json` untuk JSON.
+     
+   - XML by ID dan JSON by DD dengan kode bagian:
+     ```
+     path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+     path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+     ```
+     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/xml](http://localhost:8000/xml/[ID]` untuk XML by ID.
+     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/json](http://localhost:8000/json/[ID]` untuk JSON by ID.
 
 
 ## **No 5**
 Mengakses kelima URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman.
+
 
 
 
