@@ -332,6 +332,21 @@
 
 ## **No 5**
 Mengakses kelima URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman.
+* HTML
+![Screenshot 2023-09-19 190031](https://github.com/LokSki22/CarRel/assets/119926379/ea69e0d5-7a79-443b-a269-f58855a4cd59)
+
+* XML
+![Screenshot 2023-09-19 190100](https://github.com/LokSki22/CarRel/assets/119926379/d509b078-908d-4f51-a1b2-63d90b63e8c5)
+
+* JSON
+![Screenshot 2023-09-19 190109](https://github.com/LokSki22/CarRel/assets/119926379/d5f8f45c-82a1-4bfd-9d5b-b04be8501b1d)
+
+* XML by ID
+![Screenshot 2023-09-19 190120](https://github.com/LokSki22/CarRel/assets/119926379/1363276b-576f-4198-9901-b8e7e3ac4a61)
+
+* JSON by ID
+![Screenshot 2023-09-19 190149](https://github.com/LokSki22/CarRel/assets/119926379/1f8eacc9-9ae2-4e32-a24f-db4b21181f9c)
+
 
 
 
@@ -350,7 +365,7 @@ Mengakses kelima URL di poin 2 menggunakan Postman, membuat screenshot dari hasi
     - Berikutnya, untuk mengaktifkan _virtual environment_ saya memasukan perintah berikut:
       ```
       env\Scripts\activate.bat
-      ```
+      
     - Setelah mengaktifkan _virtual environment_ kita dapat menginstall semua dependencies yang diperlukan. Sebelumnya, saya membuat file bernama requirements.txt yang berisi _dependencies_ yang diperlukan seperti django, gunicorn, dan lain-lain.
     - Untuk menginstall _dependencies_ yang diperlukan, saya memasukan perintah berikut di _command prompt_:
     - ```
