@@ -318,16 +318,16 @@
      path('xml/', show_xml, name='show_xml'),
      path('json/', show_json, name='show_json'),
      ```
-     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/xml` untuk XML.
-     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/json` untuk JSON.
+     - Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/xml` untuk XML.
+     - Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/json` untuk JSON.
      
    - XML by ID dan JSON by DD dengan kode bagian:
      ```
      path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
      path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
      ```
-     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/xml](http://localhost:8000/xml/[ID]` untuk XML by ID.
-     Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/json](http://localhost:8000/json/[ID]` untuk JSON by ID.
+     - Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/xml](http://localhost:8000/xml/[ID]` untuk XML by ID.
+     - Kita dapat mengaksesnya dengan menjalankan `http://localhost:8000/json](http://localhost:8000/json/[ID]` untuk JSON by ID.
 
 
 ## **No 5**
