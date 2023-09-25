@@ -35,6 +35,16 @@
         {% endfor %}
     </table>
 
+
+
+
+
+    <a href="{% url 'main:logout' %}">
+        <button>
+            Logout
+        </button>
+    </a>
+
     <br />
 
     <a href="{% url 'main:create_item' %}">
@@ -42,4 +52,7 @@
             Add New Item
         </button>
     </a>
+
+
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}
