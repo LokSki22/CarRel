@@ -19,40 +19,49 @@
             <th>Price</th>
             <th>Amount</th>
             <th>Date Added</th>
+            <th>Action</th>
         </tr>
 
         {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
 
         {% for item in items %}
             <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.categories }}</td>
-                <td>{{ item.description }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.amount }}</td>
-                <td>{{ item.date_added }}</td>
+                <td style="padding: 5px;">{{ item.name }}</td>
+                <td style="padding: 5px;">{{ item.categories }}</td>
+                <td style="padding: 5px;">{{ item.description }}</td>
+                <td style="padding: 5px;">{{ item.price }}</td>
+                <td style="padding: 5px;">{{ item.amount }}</td>
+                <td style="padding: 5px;">{{ item.date_added }}</td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div style="display: flex; flex-direction: column;">
+                            <button type="submit" name="increment" value="{{ item.id }}">
+                                + Amount
+                            </button>
+                            <button type="submit" name="decrement" value="{{ item.id }}">
+                                - Amount
+                            </button>
+                            <button type="submit" name="delete" value="{{ item.id }}">
+                                Delete
+                            </button>
+                        </div>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
-
-
-
-
 
     <a href="{% url 'main:logout' %}">
         <button>
             Logout
         </button>
     </a>
-
-    <br />
-
     <a href="{% url 'main:create_item' %}">
         <button>
             Add New Item
         </button>
     </a>
-
 
     <h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

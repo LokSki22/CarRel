@@ -18,6 +18,24 @@ from django.urls import reverse
 @login_required(login_url='/login')
 def show_main(request):
     items = Item.objects.filter(user=request.user)
+    if request.method == 'POST':
+        if 'increment' in request.POST:
+            item_id = request.POST.get('increment')
+            item = items.get(id=item_id)
+            item.amount += 1
+            item.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+        elif 'decrement' in request.POST:
+            item_id = request.POST.get('decrement')
+            item = items.get(id=item_id)
+            item.amount -= 1
+            item.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+        elif 'delete' in request.POST:
+            item_id = request.POST.get('delete')
+            item = items.get(id=item_id)
+            item.delete()
+            return HttpResponseRedirect(reverse('main:show_main'))
     total_items = items.count()
     context = {
         'name': request.user.username,
@@ -37,6 +55,9 @@ def create_item(request):
      item.user = request.user
      item.save()
      return HttpResponseRedirect(reverse('main:show_main'))
+
+ context = {'form': form}
+ return render(request, "create_item.html", context)
 
 
 
