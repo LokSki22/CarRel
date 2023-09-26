@@ -299,7 +299,7 @@
        ![img_4.png](img_4.png)
 
 ## **No 6**
-5. Bonus
+6. Bonus
    - Saya membuat tiga tombol yaitu + Amount (untuk increment amount) , - Amount (untuk decrement amount), dan Delete (delete item) dengan request method POST
    - Pada views.py saya menambahkan kode berikut di `show_main`
    ```py
