@@ -300,7 +300,7 @@
 
 ## **No 6**
 6. Bonus
-   - Saya membuat tiga tombol yaitu + Amount (untuk increment amount) , - Amount (untuk decrement amount), dan Delete (delete item) dengan request method POST
+   - Saya membuat tiga tombol yaitu + Amount (untuk increment amount) , - Amount (untuk decrement amount, dimana batasannya jika amount = 1 maka item tidak bisa dikurangi), dan Delete (delete item) dengan request method POST
    - Pada views.py saya menambahkan kode berikut di `show_main`
    ```py
      def show_main(request):
@@ -315,7 +315,10 @@
           elif 'decrement' in request.POST:
               item_id = request.POST.get('decrement')
               item = items.get(id=item_id)
-              item.amount -= 1
+              if item.amount == 1:
+                  item.amount -= 0
+              else:
+                  item.amount -= 1
               item.save()
               return HttpResponseRedirect(reverse('main:show_main'))
           elif 'delete' in request.POST:

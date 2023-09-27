@@ -28,7 +28,10 @@ def show_main(request):
         elif 'decrement' in request.POST:
             item_id = request.POST.get('decrement')
             item = items.get(id=item_id)
-            item.amount -= 1
+            if item.amount == 1:
+                item.amount -= 0
+            else:
+                item.amount -= 1
             item.save()
             return HttpResponseRedirect(reverse('main:show_main'))
         elif 'delete' in request.POST:
