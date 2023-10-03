@@ -3,7 +3,9 @@ from main.views import show_main, create_item, show_xml, show_json, show_xml_by_
 from main.views import register #sesuaikan dengan nama fungsi yang dibuat
 from main.views import login_user #sesuaikan dengan nama fungsi yang dibuat
 from main.views import logout_user
+from main.views import edit_item
 app_name = 'main'
+
 
 urlpatterns = [
     path('', show_main, name='show_main'),
@@ -15,4 +17,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path('edit-item/<int:id>', edit_item, name='edit_item'),
+
 ]

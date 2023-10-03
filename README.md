@@ -1,4 +1,4 @@
-# Tugas 2,3,4 PBP (Tugas 4 diatas, Tugas lainnya dibawah)
+# Tugas 2,3,4,5 PBP (Tugas 5 diatas, Tugas lainnya dibawah)
 
 # CarRel App
 # [Link App](https://carrel.adaptable.app/main/)
@@ -127,15 +127,361 @@
 
 
 
+## **No 5**
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+* Kustomisasi desain pada templat HTML yang telah dibuat pada Tugas 4 dengan menggunakan CSS atau CSS framework (seperti Bootstrap, Tailwind, Bulma) dengan ketentuan sebagai berikut
+  - Saya menambahkan link CSS framework dalam `templates/base.html`. Saya memakai bootstrap pada tugas 5 ini
+  ```html
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"
+            />
+            {% block meta %}
+            {% endblock meta %}
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+        </head>
 
+    <body>
+        {% block content %}
+        {% endblock content %}
+    </body>
+    </html>
+  ```
+  
+  - Saya menambahkan fitur edit untuk tugas 5, untuk fitur delete saya sudah menambahkan saat tugas 4
+  ```python
+  def edit_item(request, id):
+    # Get product berdasarkan ID
+    item = Item.objects.get(pk = id)
 
+    # Set product sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=item)
 
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
 
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+  ```
+  Saya menambahkan fitur `edit_item` pada `views.py` subdirektori main. Setelah itu saya membuat file html `edit_item.html` dengan isi kode sebagai berikut:
+  ```python
+   {% extends 'base.html' %}
 
+    {% load static %}
+    
+    {% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Edit Item</div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <table class="table">
+                                {{ form.as_table }}
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary">Edit Product</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
 
+  ```
+  Setelah itu saya melakukan import fungsi tersebut di `urls.py` subdirektori main dan melakukan _routing_ dengan kode sebagai berikut:
+  ```python
+  from django.urls import path
+    from main.views import show_main, create_item, show_xml, show_json, show_xml_by_id, show_json_by_id
+    from main.views import register #sesuaikan dengan nama fungsi yang dibuat
+    from main.views import login_user #sesuaikan dengan nama fungsi yang dibuat
+    from main.views import logout_user
+    from main.views import edit_item #import disini
+    app_name = 'main'
+    
+    
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+        path('create-item', create_item, name='create_item'),
+        path('xml/', show_xml, name='show_xml'),
+        path('json/', show_json, name='show_json'),
+        path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+        path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+        path('register/', register, name='register'),
+        path('login/', login_user, name='login'),
+        path('logout/', logout_user, name='logout'),
+        path('edit-item/<int:id>', edit_item, name='edit_item'), #routing disini
+    
+    ]
 
+  ```
+  - Lalu saya panggil edit item di `main.html` dengan potongan kode sebagai berikut
+  ```html
+  <a href="{% url 'main:edit_item' item.pk %}" class="edit-button">
+      Edit
+  </a>
+  ```
+* Kustomisasi halaman login, register, dan tambah inventori semenarik mungkin.
+  - Pada halaman login, saya memakai bootstrap untuk memperbarui tampilan halaman login saya. Saya memanfaatkan container `card` untuk menampilkan form login
+  ```html
+   {% extends 'base.html' %}
 
+    {% block meta %}
+        <title>Login</title>
+    {% endblock meta %}
+    
+    {% block content %}
+    <style>
+    body {
+        font-family: 'General Sans', sans-serif;
+    }
+    </style>
+    <div class="container">
+        <div class="card mx-auto mt-5" style="max-width: 400px;">
+            <div class="card-body">
+                <h1 class="card-title">Login</h1>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                {% if messages %}
+                    <ul class="mt-3">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <p class="mt-3">Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a></p>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+  ```
+  - Pada halaman register, saya juga memakai bootstrap dan menggunakan container `card` 
+  ```html
+   {% extends 'base.html' %}
 
+    {% block meta %}
+        <title>Register</title>
+    {% endblock meta %}
+    
+    {% block content %}  
+    <style>
+    body {
+        font-family: 'General Sans', sans-serif;
+    }
+    </style>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Register</h1>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form.as_table }}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Daftar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+  ```
+* Pada halaman main, saya juga memakai bootstrap untuk memperbauri tampilan halaman main. Di halaman main, saya dapat menambahkan item, meng-delete, menambahkan jumlah item tertentu, dan meng-edit item tertentu.
+  ```html
+  {% extends 'base.html' %}
+
+    {% block content %}
+    <style>
+        body {
+            font-family: 'General Sans', sans-serif;
+        }
+    
+        /* Style for the card title */
+        .card-title {
+            font-family: 'General Sans', sans-serif;
+        }
+    
+        /* Style for the CarRel text in the navbar */
+        .navbar-brand {
+            font-weight: bold;
+        }
+    
+        /* Style for the Logout button */
+        .btn-logout {
+            background-color: red;
+            color: white;
+        }
+    
+        /* Add left and right padding to the container */
+        .container-padded {
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+    
+        /* Center-align all items */
+        .center-align {
+            text-align: center;
+        }
+    
+        btn-floating {
+            position: fixed;
+            bottom: 20px; /* Jarak dari bawah */
+            right: 20px; /* Jarak dari kanan */
+            z-index: 1000; /* Untuk mengatasi tumpukan elemen lain */
+        }
+    
+        .edit-button {
+              margin-top: 10px;
+              display: inline-flex;
+              height: 48px;
+              padding: 4px 16px;
+              justify-content: center;
+              align-items: center;
+              gap: 8px;
+              border-radius: 6px;
+              background: blueviolet;
+              color: #fff;
+              text-decoration: none;
+              border: none;
+              cursor: pointer;
+          }
+    
+        .btn-add {
+            margin-bottom: 10px;
+        }
+    
+        .bg-clr {
+            background-color: bisque;
+        }
+    
+    </style>
+    
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CarRel's Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                    </li>
+                </ul>
+                <a href="{% url 'main:logout' %}">
+                    <button class="btn btn-logout btn-outline-danger" type="button">Logout</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <p class="center-align" style="font-size: 120%;">
+        Selamat datang <strong>{{ name }}</strong> dari kelas <strong>{{ class }}</strong> !
+    </p>
+    
+    <p class="center-align" style="font-size: 100%;">
+        Anda menyimpan <strong>{{ item_count }} jenis mobil</strong> pada aplikasi CarRel
+    </p>
+    
+    </p>
+    
+    
+    <div class="container" >
+    
+        <div class="row">
+        <a href="{% url 'main:create_item' %}" class="center-align btn-add">
+                <button class="btn btn-primary btn-add">Add New Item</button>
+        </a>
+            {% for item in items%}
+                <div class="col-md-4 mb-3">
+                    <div class="card {% if forloop.last %}bg-clr{% endif %}">
+                        <div class="card-body" style="position: relative;">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-text">Categories: {{ item.categories }}</p>
+                            <p class="card-text">Description: {{ item.description }}</p>
+                            <p class="card-text"><strong>Price: {{ item.price }}</strong></p>
+                            <p class="card-text">Date Added: {{ item.date_added }}</p>
+    
+    
+                            <form method="post">
+    
+                                {% csrf_token %}
+                                <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <div style="display: flex; align-items: center;">
+                                        <button type="submit" name="increment" value="{{ item.id }}" style="border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                            </svg>
+                                        </button>
+                                        <p class="card-text" style="margin: 0 10px;">Amount: {{ item.amount }}</p>
+                                        <button type="submit" name="decrement" value="{{ item.id }}" style="border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <button type="submit" name="delete" value="{{ item.id }}" style="position: absolute; top: 10px; right: 10px; background: none; border: none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                                        </svg>
+                                    </button>
+                                     <a href="{% url 'main:edit_item' item.pk %}" class="edit-button">
+                                        Edit
+                                     </a>
+                                </div>
+                            </form>
+    
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h5 class="center-align" style="margin-top: 20px;">Sesi terakhir login: {{ last_login }}</h5>
+    {% endblock content %}
+    ```h
+
+## **No Bonus**
+* Saya memberikan warna card yang berbeda pada item yang terakhir kali ditambahkan dengan potongan kode sebagai berikut:
+  ```html
+   {% for item in items%}
+            ...
+                <div class="card {% if forloop.last %}bg-clr{% endif %}"> 
+  ```
+  Pada loop yang menampilkan seluruh item yang ditambahkan, item yang terakhir kali ditampilkan akan memiliki style backgorund tersendiri.
+* Berikut screenshot tampilannya:
+![img_5.png](img_5.png)
 
 # Tugas 4
 ## **No 1**

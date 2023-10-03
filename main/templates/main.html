@@ -1,103 +1,155 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CarRel's Shop</title>
-    <!-- Include Bootstrap CSS and any other necessary CSS files -->
-    <link rel="stylesheet" href="your-bootstrap.css">
+<style>
+    body {
+        font-family: 'General Sans', sans-serif;
+    }
 
-    <!-- Add a link to Google Fonts API to import the "Poppins" font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    /* Style for the card title */
+    .card-title {
+        font-family: 'General Sans', sans-serif;
+    }
 
-    <!-- Add custom CSS to change the font to "Poppins" and make "CarRel's Shop" text in the navbar bold -->
-    <style>
-        /* Change font to "Poppins" for the entire page */
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+    /* Style for the CarRel text in the navbar */
+    .navbar-brand {
+        font-weight: bold;
+    }
 
-        /* Make "CarRel's Shop" text in the navbar bold */
-        .navbar-brand {
-            font-weight: bold;
-        }
+    /* Style for the Logout button */
+    .btn-logout {
+        background-color: red;
+        color: white;
+    }
 
-        /* Style for cards */
-        .card {
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">CarRel's Shop</a> <!-- Updated navbar brand name -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                </ul>
-                <ul class="navbar-nav ml-auto"> <!-- Right-aligned navbar items -->
-                    <li class="nav-item">
-                        <a href="{% url 'main:logout' %}" class="nav-link">
-                            <button class="btn btn-danger">Logout</button> <!-- Red background logout button -->
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    /* Add left and right padding to the container */
+    .container-padded {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+
+    /* Center-align all items */
+    .center-align {
+        text-align: center;
+    }
+
+    btn-floating {
+        position: fixed;
+        bottom: 20px; /* Jarak dari bawah */
+        right: 20px; /* Jarak dari kanan */
+        z-index: 1000; /* Untuk mengatasi tumpukan elemen lain */
+    }
+
+    .edit-button {
+          margin-top: 10px;
+          display: inline-flex;
+          height: 48px;
+          padding: 4px 16px;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          border-radius: 6px;
+          background: blueviolet;
+          color: #fff;
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+      }
+
+    .btn-add {
+        margin-bottom: 10px;
+    }
+
+    .bg-clr {
+        background-color: bisque;
+    }
+
+</style>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">CarRel's Shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                </li>
+            </ul>
+            <a href="{% url 'main:logout' %}">
+                <button class="btn btn-logout btn-outline-danger" type="button">Logout</button>
+            </a>
         </div>
-    </nav>
-    <div class="text-center">
-        <h5>Name:</h5>
-        <p>{{ name }}</p>
-        <h5>Class:</h5>
-        <p>{{ class }}</p>
+    </div>
+</nav>
 
-        <h5>Total Item:</h5>
-        <p>Anda menyimpan {{ item_count }} jenis mobil pada aplikasi CarRel</p>
+<p class="center-align" style="font-size: 120%;">
+    Selamat datang <strong>{{ name }}</strong> dari kelas <strong>{{ class }}</strong> !
+</p>
 
-        <h5>Detail Item:</h5>
-        <div class="row">
-            {% for item in items %}
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
+<p class="center-align" style="font-size: 100%;">
+    Anda menyimpan <strong>{{ item_count }} jenis mobil</strong> pada aplikasi CarRel
+</p>
+
+</p>
+
+
+<div class="container" >
+
+    <div class="row">
+    <a href="{% url 'main:create_item' %}" class="center-align btn-add">
+            <button class="btn btn-primary btn-add">Add New Item</button>
+    </a>
+        {% for item in items%}
+            <div class="col-md-4 mb-3">
+                <div class="card {% if forloop.last %}bg-clr{% endif %}">
+                    <div class="card-body" style="position: relative;">
                         <h5 class="card-title">{{ item.name }}</h5>
-                        <p class="card-text">Category: {{ item.categories }}</p>
+                        <p class="card-text">Categories: {{ item.categories }}</p>
                         <p class="card-text">Description: {{ item.description }}</p>
-                        <p class="card-text">Price: {{ item.price }}</p>
-                        <p class="card-text">Amount: {{ item.amount }}</p>
+                        <p class="card-text"><strong>Price: {{ item.price }}</strong></p>
                         <p class="card-text">Date Added: {{ item.date_added }}</p>
+
+
                         <form method="post">
+
                             {% csrf_token %}
-                            <div class="btn-group" role="group">
-                                <button type="submit" name="increment" value="{{ item.id }}" class="btn btn-sm btn-success">
-                                    + Amount
+                            <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                                <div style="display: flex; align-items: center;">
+                                    <button type="submit" name="increment" value="{{ item.id }}" style="border: none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                        </svg>
+                                    </button>
+                                    <p class="card-text" style="margin: 0 10px;">Amount: {{ item.amount }}</p>
+                                    <button type="submit" name="decrement" value="{{ item.id }}" style="border: none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button type="submit" name="delete" value="{{ item.id }}" style="position: absolute; top: 10px; right: 10px; background: none; border: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                                    </svg>
                                 </button>
-                                <button type="submit" name="decrement" value="{{ item.id }}" class="btn btn-sm btn-danger">
-                                    - Amount
-                                </button>
-                                <button type="submit" name="delete" value="{{ item.id }}" class="btn btn-sm btn-warning">
-                                    Delete
-                                </button>
+                                 <a href="{% url 'main:edit_item' item.pk %}" class="edit-button">
+                                    Edit
+                                 </a>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-        <a href="{% url 'main:create_item' %}" class="btn btn-primary">
-            Add New Item
-        </a>
-
-        <h5>Sesi terakhir login: {{ last_login }}</h5>
+        {% endfor %}
     </div>
 </div>
-<body>
-</html>
+
+
+
+
+<h5 class="center-align" style="margin-top: 20px;">Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

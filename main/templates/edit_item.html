@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
-<div class="container mt-5">
+<style>
+body {
+    font-family: 'General Sans', sans-serif;
+}
+</style>
+<div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card">
+                <div class="card-header">Edit Item</div>
                 <div class="card-body">
-                    <h1 class="card-title">Add New Item</h1>
                     <form method="POST">
                         {% csrf_token %}
                         <table class="table">
@@ -14,7 +21,7 @@
                             <tr>
                                 <td></td>
                                 <td>
-                                    <input type="submit" class="btn btn-primary" value="Add Item"/>
+                                    <button type="submit" class="btn btn-primary">Edit Product</button>
                                 </td>
                             </tr>
                         </table>
