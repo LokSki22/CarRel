@@ -4,6 +4,139 @@
 # [Link App](https://carrel.adaptable.app/main/)
 # **Muhammad Farrel Altaf (2206829332) - PBP B**
 
+
+# Tugas 5
+## **No 1**
+1. Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+* _Element Selector_
+    - Selector Elemen digunakan untuk mengubah _style_ properti untuk semua elemen properti yang memiliki tag HTML yang sama.
+    - Contohnya sebagai berikut:
+      - ```html
+        <body>
+          <div>
+            <h1>Test 1</h1>
+            <h2>Test 2</h2>
+          </div>
+          ...
+        </body>
+        ```    
+        Lalu kita dapat menggunakan element sebagai selector dalam CSS. Formatnya _[id_name]_ (tanpa menggunakan simbol)
+      - ```html
+        h1 {
+          color: #fca205;
+          font-family: "Poppins";
+          font-style: italic;
+        }
+        ```
+* _ID Selector_
+    - ID Selector menggunakan ID pada tag untuk menjadi selector-nya. Sebuah ID bersifat unik dalam satu halaman web
+    - Contoh penggunaanya:
+      ```html
+        <body>
+          <div id="header"> 
+            <h1>Test Hi!</h1>
+          </div>
+         ...
+        </body>
+      ```
+      Setelah itu, kita dapat menggunakan id sebagai selector dalam file CSS. Formatnya #[id_name]. Cocok untuk menargetkan elemen yang spesifik
+      ```html
+        #header {
+         background-color: #f0f0f0;
+         margin-top: 0;
+         padding: 20px 20px 20px 40px;
+       }
+      ```
+
+* _Class Selector_
+    - _Class Selector_ dapat memungkinkan kita mengelompokkan lebih dari satu elemen dengan karakteristik yang sama.
+    - Contoh:
+      ```html
+       <div id="main">
+        <div class="content_section">
+            <p class="date">published: 28 September 2022</p>
+            <h2><a href="">Tutorial CSS ku</a></h2>
+            <p id="content_1">Yay ini tutorial yang gampang!</p>
+        </div>
+        <div class="content_section">
+            <p class="date ">published: 29 September 2022</p>
+            <h2><a href="">Tutorial CSS mu</a></h2>
+            <p id="content_2">Yay ini tutorial yang mudah!</p>
+        </div>
+        <div class="content_section">
+            <p>published: 30 September 2022</p>
+            <h2><a href="">Tutorial CSS semua</a></h2>
+            <p id="content_3">Yay ini tutorial yang tidak sulit!</p>
+        </div>
+       </div>
+      ```
+      Setelah itu kita dapat menggunakan class tersebut sebagai selector di file CSS. Formatnya ._[class_name]_
+      ```html
+       .content_section {
+         background-color: #3696e1;
+         margin-bottom: 30px;
+         color: #000000;
+         font-family: cursive;
+        padding: 20px 20px 20px 40px;
+       } 
+      ```        
+
+
+
+## **No 2**
+2. Jelaskan HTML5 Tag yang kamu ketahui.
+* | No | Tag           |Penjelasan |
+   |----|---------------|---|
+   | 1  | `<html>`      |  digunakan untuk mengawali dan mengakhiri seluruh kode atau dokumen HTML
+   | 2  | `<head>`      |  digunakan untuk menyertakan informasi meta, judul halaman web, dan menghubungkan html dengan _stylesheet_ serta Javascript
+   | 3  | `<title>`     |  digunakan untuk menentukan judul halaman web yang ditampilkan
+   | 4  | `<meta>`      |  digunakan untuk mendefinisikan metadata tentang halaman web, seperti karakter set, deskripsi, dan informasi lain yang relevan.
+   | 5  | `<link>`      |  digunakan untuk mengawali dan mengakhiri seluruh kode atau dokumen HTML
+    | 6  | `<body>`      |   berisi konten utama halaman web yang akan ditampilkan kepada pengguna, seperti teks, gambar, dan elemen-elemen lainnya.
+   | 7  | `<h1> - <h6>` |  Tag-tag ini digunakan untuk mengatur tingkat judul atau heading. h1 adalah yang tertinggi , sementara h6 adalah yang terendah.HTML
+   | 8  | `<p>`         |  digunakan untuk membuat paragraf teks.
+   | 9  | `<a>`         |  digunakan untuk membuat tautan atau hyperlink ke halaman web atau sumber daya lainnya.
+   | 10 | `<img>`      |  digunakan untuk menampilkan gambar di halaman web.
+   | 11 | `<ul>`      |  digunakan untuk membuat daftar tak terurut (unordered list), yang berisi elemen-elemen dalam bentuk daftar bulleted.
+   | 12 | `<ol>`      |  digunakan untuk membuat daftar terurut (ordered list), yang berisi elemen-elemen dalam bentuk daftar bernomor.
+   | 13 | `<li>`      |  digunakan untuk mendefinisikan elemen-elemen dalam daftar (baik daftar tak terurut maupun terurut).
+   | 14 | `<div>`      |  elemen blok yang digunakan untuk mengelompokkan dan mengatur elemen-elemen HTML lainnya dalam sebuah kotak atau wadah. Ini sering digunakan dalam desain tata letak halaman.
+   | 15 | `<span>`      |  digunakan untuk mengaplikasikan gaya atau mengelompokkan sebagian kecil dari teks atau elemen dalam dokumen.
+ 
+
+## **No 3**
+3. Jelaskan perbedaan antara margin dan padding.
+* | Perbedaan | Margin   | Padding                                                       |
+   |-----------|----------|---------------------------------------------------------------|
+   | Fungsi Utama         | Ruang di luar elemen, mempengaruhi tata letak elemen dalam hubungannya dengan elemen lain di sekitarnya. | Ruang di dalam elemen, mempengaruhi tampilan dan tata letak konten elemen.
+   | Dampak pada Ukuran       | Margin dapat memengaruhi ukuran keseluruhan elemen, membuatnya terlihat lebih besar dan memiliki ruang kosong di sekitarnya. | Padding tidak memengaruhi ukuran keseluruhan elemen; ukuran elemen tetap sama, hanya kontennya yang terdorong ke dalam.
+   | Pengaruh terhadap Konten         | Tidak ada pengaruh langsung terhadap konten elemen. | Memengaruhi tampilan dan tata letak konten dalam elemen.
+   | Tampilan Visual       | Tampilan visual dari margin adalah ruang kosong di sekitar elemen yang ditentukan oleh warna latar belakang elemen lain di sekitarnya | Tampilan visual dari padding adalah ruang kosong di sekitar konten elemen, yang ditentukan oleh warna latar belakang elemen itu sendiri.
+   | Pengaruh terhadap Konten         | Margin dapat digunakan dengan elemen blok maupun inline. | Padding biasanya digunakan dengan elemen blok; elemen inline memiliki padding horizontal tetapi tidak memiliki padding vertikal.
+
+
+## **No 4**
+4. Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+* | Perbedaan    | Tailwind CSS                                                                                                                    | Bootstrap                                                                                                                                |
+   |--------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+   | Desain       | Utility-first" dan fleksibel.                        | Desain lebih terstruktur dan kaku.                                                             
+   | Ukuran File  | Lebih kecil karena hanya mengandalkan kelas-kelas utilitas yang digunakan.    | Lebih besar karena sudah mencakup banyak komponen dan gaya desain.                  
+   | Kustomisasi  | Tingkat kustomisasi yang tinggi, Anda dapat mengontrol setiap aspek desain.                                                                             | Kustomisasi mungkin tidak sefleksibel karena Bootstrap memiliki desain yang sudah ditentukan.                                                                                 
+   | Kecepatan    | Memerlukan waktu lebih lama untuk menggabungkan kelas-kelas utilitas. | Lebih cepat membangun situs dengan komponen siap pakai.
+   | Jenis Proyek | Cocok untuk proyek yang membutuhkan desain unik dan tingkat kustomisasi yang tinggi                                                                     | Cocok untuk proyek yang membutuhkan pembangunan cepat dengan desain yang sudah ada.         
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Tugas 4
 ## **No 1**
 1. Apa itu Django `UserCreationForm`, dan jelaskan apa kelebihan dan kekurangannya?
@@ -739,7 +872,7 @@ Mengakses kelima URL di poin 2 menggunakan Postman, membuat screenshot dari hasi
       ```
     - Setelah menginstall _dependencies_, saya membuat proyek Django yang baru dengan memasukan perintah berikut:
     - ```
-      django-admin startproject libshop .
+      django-admin startproject CarRel .
       ```
     - Karena proyek yang dibuat masih tahap uji coba, `ALLOWED HOST` pada `settings.py` saya tambahkan "*" agar setiap _hosts_ bisa mengakses aplikasi web
      ```
