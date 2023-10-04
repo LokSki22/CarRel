@@ -316,7 +316,7 @@
     </div>
     {% endblock content %}
   ```
-* Pada halaman main, saya juga memakai bootstrap untuk memperbauri tampilan halaman main. Di halaman main, saya dapat menambahkan item, meng-delete, menambahkan jumlah item tertentu, dan meng-edit item tertentu.
+* Pada halaman main, saya juga memakai bootstrap untuk memperbarui tampilan halaman main. Di halaman main, saya dapat menambahkan item, meng-delete, menambahkan jumlah item tertentu, dan meng-edit item tertentu.
   ```html
   {% extends 'base.html' %}
 
