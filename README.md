@@ -118,7 +118,7 @@
         ```
   - AJAX POST      
     - Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item. Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat. Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/. Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa reload halaman utama secara keseluruhan.
-      - Saya membuat modal serta tombol untuk menambahkan produk dengan AJAX di `main.html` dengan kode berikut:
+      - Saya membuat modal serta sebuah tombol untuk menambahkan produk dengan AJAX di `main.html` dengan kode berikut:
         ```html
         <div class="center-content">
 
