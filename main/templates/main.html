@@ -274,23 +274,6 @@
 
 
 
-    {#function incrementProduct(id) {#}
-    {#    fetch("/increment-item-ajax/" + id + "/", {#}
-    {#        method: "POST"#}
-    {#    }).then(refreshProducts)#}
-    {##}
-    {#    document.getElementById("form").reset()#}
-    {#    return false#}
-    {#}#}
-    {##}
-    {#function decrementProduct(id) {#}
-    {#    fetch("/decrement-item-ajax/" + id + "/", {#}
-    {#        method: "POST"#}
-    {#    }).then(refreshProducts)#}
-    {##}
-    {#    document.getElementById("form").reset()#}
-    {#    return false#}
-    {#}#}
 
     function incrementProduct(event, id) {
     event.preventDefault();

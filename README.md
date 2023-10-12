@@ -36,14 +36,8 @@
 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 * Mengubah tugas 5 yang dibuat sebelumnya menjadi menggunakan AJAX
   - AJAX GET
-    - Ubahlah kode cards data item agar dapat mendukung AJAX GET. Lakukan pengambilan task menggunakan AJAX GET.
-      - Saya membuat fungsi `get_product_json` untuk mendapatkan data item dengan format json per id di `views.py` dengan kode:
-        ```python
-        def get_product_json(request):
-            product_item = Item.objects.all()
-            return HttpResponse(serializers.serialize('json', product_item))
-
-        ```
+    - Ubahlah kode cards data item agar dapat mendukung AJAX GET. 
+      
       - Lalu saya mengubah card template agar bisa memanfaatkan script AJAX GET di `main.html`
         ```html
         <div class="center-content">
@@ -54,70 +48,30 @@
     
         </div>
         ```
-      - Lalu saya membuat script di `main.html` agar page selalu refresh dengan menampilkan data terbaru
-        ```javascript
-        async function refreshProducts() {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        const container = document.getElementById("cardContainer");
-        container.innerHTML = "";  // Clear the current content.
-    
-        const products = await getProducts();
-    
-        products.forEach((item, index) => {
-            container.innerHTML += `
-                <div class="col-12 mb-3" style="padding-left: 100px; padding-right: 100px;"> <!-- Adjusted grid class and added inline styles for margins -->
-                    <div class="card ${index === products.length - 1 ? 'bg-clr' : ''}">
-                        <div class="card-body" style="position: relative;">
-                            <h5 class="card-title">${item.fields.name}</h5>
-                            <p class="card-text">Categories: ${item.fields.categories}</p>
-                            <p class="card-text">Description: ${item.fields.description}</p>
-                            <p class="card-text"><strong>Price: ${item.fields.price}</strong></p>
-                            <p class="card-text">Date Added: ${item.fields.date_added}</p>
-    
-                            <form method="post">
-                                <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
-                                <div style="display: flex; flex-direction: column; justify-content: flex-start;">
-                                    <div style="display: flex; align-items: center;">
-                                        <button
-                                                onclick="incrementProduct(event, ${item.pk})"
-                                                style="border: none;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
-                                            </svg>
-                                        </button>
-                                        <p class="card-text" style="margin: 0 10px;">Amount: ${item.fields.amount}</p>
-                                        <button
-                                                onclick="decrementProduct(event, ${item.pk})"
-                                                style="border: none;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-    
-                                    <button type="button"
-                                            onclick="deleteProduct(${item.pk})"
-                                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
-                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
-                                        </svg>
-                                    </button>
-    
-    
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>`;
-        });
-         updateItemsTotal(products.length);
-        }
-    
-        refreshProducts();
+    - Lakukan pengambilan task menggunakan AJAX GET.  
+      - Saya membuat fungsi `get_product_json` untuk mendapatkan data item dengan format json per id di `views.py` dengan kode:
+        ```python
+        def get_product_json(request):
+            product_item = Item.objects.all()
+            return HttpResponse(serializers.serialize('json', product_item))
+
         ```
+      
+      - Saya lakukan routing di `urls.py` 
+        ```python
+        path('get-product/', get_product_json, name='get_product_json'),
+        ```
+      
+      - Saya tambahkan function javascript di `main.html` :
+        ```javascript
+        async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+        ```
+      
+      
   - AJAX POST      
-    - Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item. Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat. Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/. Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa reload halaman utama secara keseluruhan.
+    - Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item. 
       - Saya membuat modal serta sebuah tombol untuk menambahkan produk dengan AJAX di `main.html` dengan kode berikut:
         ```html
         <div class="center-content">
@@ -191,10 +145,109 @@
         return HttpResponseNotFound()
 
         ```
+    - Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat. 
       - Lalu saya lakukan routing di `urls.py`
         ```python
         path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
         ```
+    - Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/. 
+      - Saya membuat function ini di script `main.html`
+        ```javascript
+        function addProduct() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+        }
+        document.getElementById("button_add").onclick = addProduct
+
+        ```
+    
+    - Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa reload halaman utama secara keseluruhan.
+      - Lalu saya membuat script di `main.html` agar page selalu refresh dengan menampilkan data terbaru
+        ```javascript
+        async function refreshProducts() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const container = document.getElementById("cardContainer");
+        container.innerHTML = "";  // Clear the current content.
+    
+        const products = await getProducts();
+    
+        products.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="col-12 mb-3" style="padding-left: 100px; padding-right: 100px;"> <!-- Adjusted grid class and added inline styles for margins -->
+                    <div class="card ${index === products.length - 1 ? 'bg-clr' : ''}">
+                        <div class="card-body" style="position: relative;">
+                            <h5 class="card-title">${item.fields.name}</h5>
+                            <p class="card-text">Categories: ${item.fields.categories}</p>
+                            <p class="card-text">Description: ${item.fields.description}</p>
+                            <p class="card-text"><strong>Price: ${item.fields.price}</strong></p>
+                            <p class="card-text">Date Added: ${item.fields.date_added}</p>
+    
+                            <form method="post">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                                <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <div style="display: flex; align-items: center;">
+                                        <button
+                                                onclick="incrementProduct(event, ${item.pk})"
+                                                style="border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                            </svg>
+                                        </button>
+                                        <p class="card-text" style="margin: 0 10px;">Amount: ${item.fields.amount}</p>
+                                        <button
+                                                onclick="decrementProduct(event, ${item.pk})"
+                                                style="border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+    
+                                    <button type="button"
+                                            onclick="deleteProduct(${item.pk})"
+                                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                                        </svg>
+                                    </button>
+    
+    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>`;
+        });
+         updateItemsTotal(products.length);
+        }
+    
+        refreshProducts();
+        ```
+      - Saya menambahkan fungsi increment dan decrement produk dengan ajax. 
+        ```javascript
+        function incrementProduct(event, id) {
+        event.preventDefault();
+        fetch("/increment-item-ajax/" + id + "/", {
+            method: "POST"
+        }).then(refreshProducts)
+        }
+    
+        function decrementProduct(event, id) {
+            event.preventDefault();
+            fetch("/decrement-item-ajax/" + id + "/", {
+                method: "POST"
+            }).then(refreshProducts)
+        }
+        ```
+        Mereka dipanggil dengan `onclick="incrementProduct(event, ${item.pk})"` dan ` onclick="decrementProduct(event, ${item.pk})"`
+
+
   - Melakukan perintah collectstatic
     - Pada settings.py, tambahkan `STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')` di bawah STATIC_URL.
     - Jalankan perintah python manage.py collectstatic untuk mengumpulkan semua file static ke folder staticfiles.
