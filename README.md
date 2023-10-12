@@ -195,9 +195,9 @@
         ```python
         path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
         ```
-    - Melakukan perintah collectstatic
-      - Pada settings.py, tambahkan `STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')` di bawah STATIC_URL.
-      - Jalankan perintah python manage.py collectstatic untuk mengumpulkan semua file static ke folder staticfiles.
+  - Melakukan perintah collectstatic
+    - Pada settings.py, tambahkan `STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')` di bawah STATIC_URL.
+    - Jalankan perintah python manage.py collectstatic untuk mengumpulkan semua file static ke folder staticfiles.
     
 ## **No 6**
 * BONUS tugas 6
