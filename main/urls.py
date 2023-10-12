@@ -4,6 +4,8 @@ from main.views import register #sesuaikan dengan nama fungsi yang dibuat
 from main.views import login_user #sesuaikan dengan nama fungsi yang dibuat
 from main.views import logout_user
 from main.views import edit_item
+from main.views import get_product_json, add_product_ajax
+from main.views import delete_item_ajax, decrement_item_ajax,increment_item_ajax
 app_name = 'main'
 
 
@@ -18,5 +20,9 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('edit-item/<int:id>', edit_item, name='edit_item'),
-
+    path('delete-item-ajax/<int:id>/', delete_item_ajax, name='delete_item_ajax'),
+    path('get-product/', get_product_json, name='get_product_json'),
+    path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
+    path('increment-item-ajax/<int:id>/', increment_item_ajax, name='increment_item_ajax'),
+    path('decrement-item-ajax/<int:id>/', decrement_item_ajax, name='decrement_item_ajax'),
 ]

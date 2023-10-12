@@ -14,31 +14,32 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
     items = Item.objects.filter(user=request.user)
-    if request.method == 'POST':
-        if 'increment' in request.POST:
-            item_id = request.POST.get('increment')
-            item = items.get(id=item_id)
-            item.amount += 1
-            item.save()
-            return HttpResponseRedirect(reverse('main:show_main'))
-        elif 'decrement' in request.POST:
-            item_id = request.POST.get('decrement')
-            item = items.get(id=item_id)
-            if item.amount == 1:
-                item.amount -= 0
-            else:
-                item.amount -= 1
-            item.save()
-            return HttpResponseRedirect(reverse('main:show_main'))
-        elif 'delete' in request.POST:
-            item_id = request.POST.get('delete')
-            item = items.get(id=item_id)
-            item.delete()
-            return HttpResponseRedirect(reverse('main:show_main'))
+    # if request.method == 'POST':
+    #     if 'increment' in request.POST:
+    #         item_id = request.POST.get('increment')
+    #         item = items.get(id=item_id)
+    #         item.amount += 1
+    #         item.save()
+    #         return HttpResponseRedirect(reverse('main:show_main'))
+    #     elif 'decrement' in request.POST:
+    #         item_id = request.POST.get('decrement')
+    #         item = items.get(id=item_id)
+    #         if item.amount == 1:
+    #             item.amount -= 0
+    #         else:
+    #             item.amount -= 1
+    #         item.save()
+    #         return HttpResponseRedirect(reverse('main:show_main'))
+    #     elif 'delete' in request.POST:
+    #         item_id = request.POST.get('delete')
+    #         item = items.get(id=item_id)
+    #         item.delete()
+    #         return HttpResponseRedirect(reverse('main:show_main'))
     total_items = items.count()
     context = {
         'name': request.user.username,
@@ -127,4 +128,48 @@ def edit_item(request, id):
 
     context = {'form': form}
     return render(request, "edit_item.html", context)
+
+def get_product_json(request):
+    product_item = Item.objects.filter(user = request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        categories = request.POST.get("categories")
+        user = request.user
+
+        new_product = Item(name=name, price=price, description=description, user=user, amount=amount, categories=categories)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def delete_item_ajax(request, id):
+    item = Item.objects.get(pk=id)
+    item.delete()
+    return HttpResponse(b"DELETED", status=201)
+
+@csrf_exempt
+def increment_item_ajax(request, id):
+    item = Item.objects.get(pk=id)
+    item.amount += 1
+    item.save()
+    return HttpResponse(b"DELETED", status=201)
+
+@csrf_exempt
+def decrement_item_ajax(request, id):
+    item = Item.objects.get(pk=id)
+    item.amount -= 1
+    if item.amount<1:
+        item.amount = 1
+    item.save()
+    return HttpResponse(b"DELETED", status=201)
+
+
 

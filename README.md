@@ -5,6 +5,237 @@
 # **Muhammad Farrel Altaf (2206829332) - PBP B**
 
 
+
+# Tugas 6
+## **No 1**
+1. Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+* _Synchronous programming_ adalah metode pemrograman di mana operasi atau tugas-tugas dieksekusi secara berurutan. Dalam metode ini, jika ada operasi yang memerlukan durasi panjang, seluruh program akan menunggu dan tidak dapat melaksanakan operasi lain hingga operasi tersebut berakhir.
+
+* _Asynchronous programming_ adalah metode pemrograman  yang memungkinkan operasi untuk berjalan di latar belakang dan tidak menghalangi (blocking) eksekusi operasi lainnya. Dalam metode ini, tugas yang membutuhkan waktu yang lama dapat dijalankan secara bersamaan dengan tugas lainnya, sehingga program dapat terus berjalan tanpa terhenti.
+
+* Dalam pemrograman _Asynchronous programming_, program memanfaatkan fungsi callback atau promise untuk mengatasi hasil dari operasi yang sedang dijalankan. Fungsi callback akan diaktifkan saat operasi selesai, sementara promise memberikan nilai setelah operasi rampung. Sebaliknya, dalam _Synchronous programming_ , program akan menanti hingga sebuah operasi selesai sebelum bergerak ke operasi selanjutnya, jadi tidak diperlukan fungsi callback atau promise.
+
+
+## **No 2**
+2. Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini. 
+* Paradigma event-driven programming merupakan di mana alur eksekusi program ditentukan oleh sejumlah peristiwa, seperti tindakan _user_ (klik mouse, klik keyboard) atau pesan dari program lain atau thread. Contohnya, pada tugas ini, event-driven programming digunakan untuk menangani event yang terjadi pada aplikasi web seperti klik tombol, input teks, dan lain-lain.
+* Contoh penerapannya pada tugas kali ini adalah: 
+
+
+## **No 3**
+3. Jelaskan penerapan asynchronous programming pada AJAX.
+* Dalam AJAX, asynchronous programming memungkinkan kita untuk mengambil informasi dari server tanpa perlu memperbarui seluruh halaman. Dengan _asynchronous programming_, saat permintaan dikirim ke server, eksekusi program lain dapat berlanjut tanpa menunggu balasan dari server. Begitu balasan diterima, program kemudian menjalankan fungsi tertentu untuk memproses informasi tersebut. Pendekatan ini meningkatkan efisiensi dan responsivitas aplikasi web, memberikan pengalaman yang lebih mulus bagi pengguna tanpa perlu menunggu pembaruan halaman penuh.
+
+
+## **No 4**
+4. Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan
+* Sejak munculnya AJAX, library jQuery telah menjadi instrumen utama dalam implementasinya, menawarkan cara sederhana untuk melakukan permintaan asinkron. Keunggulan dari AJAX melalui jQuery terletak pada kompatibilitas lintas browser-nya, memastikan fungsionalitas bahkan pada browser yang lebih tua yang belum mendukung teknologi web terkini. Namun, seiring berjalannya waktu, browser modern telah menawarkan Fetch API yang merupakan fitur bawaan browser modern, memungkinkan permintaan asinkron tanpa kebutuhan library tambahan. Fetch API menyediakan fleksibilitas lebih dalam mengelola permintaan dan respons, dan mendukung teknologi terbaru seperti promises dan async/await. Mengingat Fetch API adalah standar web modern, dukungan lintas browser sudah luas, dan ini menghilangkan kebutuhan library tambahan. 
+* Untuk sekarang, Fetch API sering kali dipilih karena kode yang lebih efisien, tidak adanya ketergantungan, dan kapabilitas aslinya. Meskipun demikian, untuk aplikasi yang fokus pada kompatibilitas atau telah mengadopsi jQuery sepenuhnya, AJAX melalui jQuery masih memiliki tempatnya.
+
+## **No 5**
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+* Mengubah tugas 5 yang dibuat sebelumnya menjadi menggunakan AJAX
+  - AJAX GET
+    - Ubahlah kode cards data item agar dapat mendukung AJAX GET. Lakukan pengambilan task menggunakan AJAX GET.
+      - Saya membuat fungsi `get_product_json` untuk mendapatkan data item dengan format json per id di `views.py` dengan kode:
+        ```python
+        def get_product_json(request):
+            product_item = Item.objects.all()
+            return HttpResponse(serializers.serialize('json', product_item))
+
+        ```
+      - Lalu saya mengubah card template agar bisa memanfaatkan script AJAX GET di `main.html`
+        ```html
+        <div class="center-content">
+
+        ...
+  
+        <div id="cardContainer"></div>
+    
+        </div>
+        ```
+      - Lalu saya membuat script di `main.html` agar page selalu refresh dengan menampilkan data terbaru
+        ```javascript
+        async function refreshProducts() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const container = document.getElementById("cardContainer");
+        container.innerHTML = "";  // Clear the current content.
+    
+        const products = await getProducts();
+    
+        products.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="col-12 mb-3" style="padding-left: 100px; padding-right: 100px;"> <!-- Adjusted grid class and added inline styles for margins -->
+                    <div class="card ${index === products.length - 1 ? 'bg-clr' : ''}">
+                        <div class="card-body" style="position: relative;">
+                            <h5 class="card-title">${item.fields.name}</h5>
+                            <p class="card-text">Categories: ${item.fields.categories}</p>
+                            <p class="card-text">Description: ${item.fields.description}</p>
+                            <p class="card-text"><strong>Price: ${item.fields.price}</strong></p>
+                            <p class="card-text">Date Added: ${item.fields.date_added}</p>
+    
+                            <form method="post">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                                <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <div style="display: flex; align-items: center;">
+                                        <button
+                                                onclick="incrementProduct(event, ${item.pk})"
+                                                style="border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                            </svg>
+                                        </button>
+                                        <p class="card-text" style="margin: 0 10px;">Amount: ${item.fields.amount}</p>
+                                        <button
+                                                onclick="decrementProduct(event, ${item.pk})"
+                                                style="border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+    
+                                    <button type="button"
+                                            onclick="deleteProduct(${item.pk})"
+                                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                                        </svg>
+                                    </button>
+    
+    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>`;
+        });
+         updateItemsTotal(products.length);
+        }
+    
+        refreshProducts();
+        ```
+  - AJAX POST      
+    - Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item. Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat. Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/. Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa reload halaman utama secara keseluruhan.
+      - Saya membuat modal serta tombol untuk menambahkan produk dengan AJAX di `main.html` dengan kode berikut:
+        ```html
+        <div class="center-content">
+
+        <div class="button-container">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+        </div>
+    
+        ...
+    
+        </div>
+        
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categories" class="col-form-label">Categories:</label>
+                            <textarea class="form-control" id="categories" name="categories"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="col-form-label">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        ```
+    - Buatlah fungsi view baru untuk menambahkan item baru ke dalam basis data.
+      - Saya membuat fungsi `add_product_ajax` di views.py yang dapat di implementasikan di main.html
+        ```python
+        def add_product_ajax(request):
+        if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        categories = request.POST.get("categories")
+        user = request.user
+
+        new_product = Item(name=name, price=price, description=description, user=user, amount=amount, categories=categories)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+        return HttpResponseNotFound()
+
+        ```
+      - Lalu saya lakukan routing di `urls.py`
+        ```python
+        path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
+        ```
+    - Melakukan perintah collectstatic
+      - Pada settings.py, tambahkan `STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')` di bawah STATIC_URL.
+      - Jalankan perintah python manage.py collectstatic untuk mengumpulkan semua file static ke folder staticfiles.
+    
+## **No 6**
+* BONUS tugas 6
+  - Menambahkan fungsionalitas hapus dengan menggunakan AJAX DELETE
+    - Saya membuat fungsi `delete_item_ajax` pada `views.py`
+      ```python
+        def delete_item_ajax(request, id):
+            item = Item.objects.get(pk=id)
+            item.delete()
+            return HttpResponse(b"DELETED", status=201)
+      ```
+    - Lakukan routing pada `urls.py`
+      ```python
+        path('delete-item-ajax/<int:id>/', delete_item_ajax, name='delete_item_ajax'),
+      ```
+    - Menambahkan function berukut di main.html
+      ```javascript
+        function deleteProduct(id) {
+        fetch("/delete-item-ajax/" + id + "/", {
+            method: "POST"
+        }).then(refreshProducts)
+    
+        document.getElementById("form").reset()
+        return false
+        }
+      ```
+    - Mencantumkan function script `deleteProduct` di button delete
+      ```javascript
+        <button type="button"
+           onclick="deleteProduct(${item.pk})" ->Scriptnya
+           style="position: absolute; top: 10px; right: 10px; background: none; border: none; ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+          </svg>
+        </button>
+      ```
+
 # Tugas 5
 ## **No 1**
 1. Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
