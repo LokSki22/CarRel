@@ -253,7 +253,7 @@
     - Jalankan perintah python manage.py collectstatic untuk mengumpulkan semua file static ke folder staticfiles.
     
 ## **No 6**
-* BONUS Tugas 6
+* BONUS tugas 6
   - Menambahkan fungsionalitas hapus dengan menggunakan AJAX DELETE
     - Saya membuat fungsi `delete_item_ajax` pada `views.py`
       ```python
