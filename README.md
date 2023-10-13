@@ -19,7 +19,7 @@
 ## **No 2**
 2. Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini. 
 * Paradigma event-driven programming merupakan di mana alur eksekusi program ditentukan oleh sejumlah peristiwa, seperti tindakan _user_ (klik mouse, klik keyboard) atau pesan dari program lain atau thread. Contohnya, pada tugas ini, event-driven programming digunakan untuk menangani event yang terjadi pada aplikasi web seperti klik tombol, input teks, dan lain-lain.
-* Contoh penerapannya pada tugas kali ini adalah: 
+
 
 
 ## **No 3**
