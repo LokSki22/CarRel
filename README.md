@@ -1,6 +1,6 @@
 # Tugas 2,3,4,5,6 PBP (Tugas 6 diatas, Tugas lainnya dibawah)
 
-# CarRel App
+# CarRel Application
 # [Link App](https://carrel.adaptable.app/main/)
 # **Muhammad Farrel Altaf (2206829332) - PBP B**
 
