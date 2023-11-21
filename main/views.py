@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from main.forms import ItemForm
@@ -15,6 +17,7 @@ import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
@@ -177,11 +180,13 @@ def create_product_flutter(request):
         
         data = json.loads(request.body)
 
-        new_product = Product.objects.create(
-            user = request.user,
-            name = data["name"],
-            price = int(data["price"]),
-            description = data["description"]
+        new_product = Item.objects.create(
+            user=request.user,
+            name=data["name"],
+            amount=int(data["amount"]),
+            price=int(data["price"]),
+            description=data["description"],
+            categories=data["categories"],
         )
 
         new_product.save()
