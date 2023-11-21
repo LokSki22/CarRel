@@ -5,7 +5,7 @@ from main.views import login_user #sesuaikan dengan nama fungsi yang dibuat
 from main.views import logout_user
 from main.views import edit_item
 from main.views import get_product_json, add_product_ajax
-from main.views import delete_item_ajax, decrement_item_ajax,increment_item_ajax
+from main.views import delete_item_ajax, decrement_item_ajax,increment_item_ajax,create_product_flutter
 app_name = 'main'
 
 
@@ -25,4 +25,5 @@ urlpatterns = [
     path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
     path('increment-item-ajax/<int:id>/', increment_item_ajax, name='increment_item_ajax'),
     path('decrement-item-ajax/<int:id>/', decrement_item_ajax, name='decrement_item_ajax'),
+    path('create-flutter/', create_product_flutter, name='create_product_flutter'),
 ]
